@@ -19,6 +19,9 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "NAME", nullable = false)
     private String name;
 
