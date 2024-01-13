@@ -1,6 +1,6 @@
 package com.example.tosshelperappserver.api;
 
-import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
+import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,7 +26,7 @@ public class ExampleApiController {
                     content = {@Content(schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "404", description = "Not Found"),
     })
-    public String getMemberProfile(
+    public String example(
             @PathVariable
             @Schema(description = "Member ID", example = "1")
             Long pathValue,

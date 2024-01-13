@@ -1,4 +1,4 @@
-package com.example.tosshelperappserver.dto.member;
+package com.example.tosshelperappserver.dto.member.swagger;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

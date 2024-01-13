@@ -1,4 +1,4 @@
-package com.example.tosshelperappserver.config;
+package com.example.tosshelperappserver.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -26,7 +26,7 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    private static final String BEARER_TOKEN_PREFIX = "Bearer";
+//    private static final String BEARER_TOKEN_PREFIX = "Bearer";
 
 //    @Bean
 //    // 운영 환경에는 Swagger를 비활성화하기 위해 추가했습니다.

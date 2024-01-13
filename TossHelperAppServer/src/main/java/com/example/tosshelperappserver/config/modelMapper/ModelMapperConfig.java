@@ -1,4 +1,4 @@
-package com.example.tosshelperappserver.config;
+package com.example.tosshelperappserver.config.modelMapper;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
