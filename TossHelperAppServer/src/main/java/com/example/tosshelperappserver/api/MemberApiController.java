@@ -1,20 +1,19 @@
 package com.example.tosshelperappserver.api;
 
+import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
 import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
+import com.example.tosshelperappserver.dto.member.MemberJoinResponseDto;
+import com.example.tosshelperappserver.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,34 +22,28 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
 public class MemberApiController {
+    private final MemberService memberService;
 
-    @PostMapping("/{pathValue}")
-    @Operation(summary = "Get member profile", description = "특정 멤버의 상세 정보를 조회한다.")
+    @PostMapping("")
+    @Operation(summary = "회원 가입 API", description = "회원 가입을 시킨다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "성공",
-                    content = {@Content(schema = @Schema(implementation = String.class))}),
-            @ApiResponse(responseCode = "404", description = "해당 ID의 유저가 존재하지 않습니다."),
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(schema = @Schema(implementation = MemberJoinResponseDto.class))}),
+            @ApiResponse(responseCode = "412", description = "Validate Error",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
     })
-    public String getMemberProfile(
-            @PathVariable
-            @Schema(description = "Member ID", example = "1")
-            Long pathValue,
-
-            // TODO: Replace with member ID from JWT or that from any other authentication method
-            @Parameter(name = "paramValue", description = "로그인 유저 ID 값", example = "3", required = true)
-            @RequestParam final Long paramValue,
-
-            @RequestBody @Valid MemberJoinRequestDto request
+    public ResponseEntity<MemberJoinResponseDto> getMemberProfile(
+            @Valid @RequestBody MemberJoinRequestDto request
     ) {
-        return "Hello World!";
+
+        Long memberId = memberService.addMember(request);
+        MemberJoinResponseDto response = new MemberJoinResponseDto(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping("/hello")
-    @Operation(summary = "Get member profile", description = "특정 멤버의 상세 정보를 조회한다.")
-    public String getHello(
-    ) {
-        return "Hello World!";
-    }
+
 
 
 }
