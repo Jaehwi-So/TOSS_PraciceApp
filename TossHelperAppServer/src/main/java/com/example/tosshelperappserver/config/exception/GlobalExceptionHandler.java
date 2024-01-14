@@ -27,18 +27,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
 
     public static final String TRACE = "trace";
 
-    @Value("${reflectoring.trace:false}")
+    @Value("${error.printStackTrace}")
     private boolean printStackTrace;
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-        return buildErrorResponse(ex, HttpStatus.valueOf(statusCode.value()), request);
-    }
-
-    private ResponseEntity<Object> buildErrorResponse(Exception exception,
-                                                      HttpStatus httpStatus,
-                                                      WebRequest request) {
-        return buildErrorResponse(exception, exception.getMessage(), httpStatus, request);
+        return buildErrorResponse(ex, ex.getMessage(), HttpStatus.valueOf(statusCode.value()), request);
     }
 
     private ResponseEntity<Object> buildErrorResponse(Exception exception,
@@ -89,7 +83,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleNoSuchElementFoundException(NoSuchElementFoundException noSuchElementFoundException, WebRequest request) {
         log.error("Failed to find the request element", noSuchElementFoundException);
-        return buildErrorResponse(noSuchElementFoundException, HttpStatus.NOT_FOUND, request);
+        return buildErrorResponse(noSuchElementFoundException, noSuchElementFoundException.getMessage(), HttpStatus.NOT_FOUND, request);
     }
 
     // 409 AlreadyExistElementException
@@ -98,7 +92,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Object> handleAlreadyExistElementException(AlreadyExistElementException alreadyExistElementException, WebRequest request){
         log.error("Failed to element is already exist", alreadyExistElementException);
-        return buildErrorResponse(alreadyExistElementException, HttpStatus.CONFLICT, request);
+        return buildErrorResponse(alreadyExistElementException, alreadyExistElementException.getMessage(), HttpStatus.CONFLICT, request);
     }
 
 
@@ -109,7 +103,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<Object> handleAuthForbiddenException(AuthForbiddenException authForbiddenException, WebRequest request) {
         log.error("Failed to Auth fail", authForbiddenException);
-        return buildErrorResponse(authForbiddenException, HttpStatus.FORBIDDEN, request);
+        return buildErrorResponse(authForbiddenException, authForbiddenException.getMessage(), HttpStatus.FORBIDDEN, request);
     }
 
     // 404 FileDownloadException
@@ -118,7 +112,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleFileDownloadException(FileDownloadException fileDownloadException, WebRequest request) {
         log.error("Failed to while file download", fileDownloadException);
-        return buildErrorResponse(fileDownloadException, HttpStatus.NOT_FOUND, request);
+        return buildErrorResponse(fileDownloadException, fileDownloadException.getMessage(), HttpStatus.NOT_FOUND, request);
     }
 
 
@@ -128,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> handleFileUploadException(FileUploadException fileUploadException, WebRequest request) {
         log.error("Failed to while file upload", fileUploadException);
-        return buildErrorResponse(fileUploadException, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return buildErrorResponse(fileUploadException, fileUploadException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     // 412 PreconditionFailException
@@ -137,7 +131,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     public ResponseEntity<Object> handlePreconditionFailException(PreconditionFailException preconditionFailException, WebRequest request) {
         log.error("Failed to doesn't match precondition", preconditionFailException);
-        return buildErrorResponse(preconditionFailException, HttpStatus.PRECONDITION_FAILED, request);
+        return buildErrorResponse(preconditionFailException, preconditionFailException.getMessage(), HttpStatus.PRECONDITION_FAILED, request);
     }
 
     // 412 ExpireException
@@ -145,7 +139,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     public ResponseEntity<Object> handleSubscribeExpireException(ExpireException subscribeExpireException, WebRequest request) {
         log.error("Failed to doesn't match precondition", subscribeExpireException);
-        return buildErrorResponse(subscribeExpireException, HttpStatus.PRECONDITION_FAILED, request);
+        return buildErrorResponse(subscribeExpireException, subscribeExpireException.getMessage(), HttpStatus.PRECONDITION_FAILED, request);
     }
 
     /** 필요시 ExceptionHandler 추가 - 예상가는 오류 있다면 전부 ExceptionHandler 이용해 처리. **/
@@ -162,3 +156,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     }
 
 }
+
+

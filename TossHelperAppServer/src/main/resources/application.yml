@@ -44,3 +44,7 @@ springdoc:
 jwt:
   expiration_time: 86400000 #1?
   secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa
+
+
+error:
+  printStackTrace: true

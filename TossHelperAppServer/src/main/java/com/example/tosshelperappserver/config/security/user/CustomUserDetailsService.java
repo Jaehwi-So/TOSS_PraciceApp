@@ -2,7 +2,7 @@ package com.example.tosshelperappserver.config.security.user;
 
 import com.example.tosshelperappserver.domain.Member;
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
-import com.example.tosshelperappserver.repository.MemberJpaRepository;
+import com.example.tosshelperappserver.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final ModelMapper mapper;
 
     @Override

@@ -1,10 +1,11 @@
 package com.example.tosshelperappserver.service;
 
+import com.example.tosshelperappserver.common.constant.RoleType;
 import com.example.tosshelperappserver.config.exception.custom.AlreadyExistElementException;
 import com.example.tosshelperappserver.domain.Member;
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
 import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
-import com.example.tosshelperappserver.repository.MemberJpaRepository;
+import com.example.tosshelperappserver.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService{
 
-    private final MemberJpaRepository memberJpaRepository;
+    private final MemberRepository memberJpaRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder encoder;
 
@@ -24,11 +25,13 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public Long addMember(MemberJoinRequestDto inputMember) {
         Member exist = memberJpaRepository.findMemberByEmail(inputMember.getEmail());
-        if(exist == null){
+        if(exist != null){
             throw new AlreadyExistElementException("이미 존재하는 이메일입니다.");
         }
         inputMember.setPassword(encoder.encode(inputMember.getPassword()));
-        Member member = memberJpaRepository.save(modelMapper.map(inputMember, Member.class));
+        Member member = modelMapper.map(inputMember, Member.class);
+        member.setRole(RoleType.COMMON);
+        member = memberJpaRepository.save(member);
         return member.getMemberId();
     }
 
