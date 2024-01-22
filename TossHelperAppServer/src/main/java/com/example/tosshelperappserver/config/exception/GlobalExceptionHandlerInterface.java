@@ -66,4 +66,13 @@ public interface GlobalExceptionHandlerInterface {
     ResponseEntity<Object> handleSubscribeExpireException(ExpireException subscribeExpireException, WebRequest request);
 
 
+    /**
+     * [AuthenticationCredientialException 401]
+     * 인증 실패
+     */
+    @ExceptionHandler(AuthenticationCredientialException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    ResponseEntity<Object> handleUnauthenticationCredException(AuthenticationCredientialException authCredientialException, WebRequest request);
+
+
 }

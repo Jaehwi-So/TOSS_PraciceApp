@@ -22,7 +22,6 @@ logging:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
     groups-order: DESC
     tags-sorter: alpha
     operations-sorter: method

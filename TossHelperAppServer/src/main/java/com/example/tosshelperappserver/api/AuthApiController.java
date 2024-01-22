@@ -1,6 +1,7 @@
 package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
+import com.example.tosshelperappserver.config.exception.custom.AuthenticationCredientialException;
 import com.example.tosshelperappserver.dto.member.swagger.LoginRequestDto;
 import com.example.tosshelperappserver.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +32,7 @@ public class AuthApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
                     content = {@Content(schema = @Schema(implementation = String.class))}),
-            @ApiResponse(responseCode = "403", description = "Fail",
+            @ApiResponse(responseCode = "401", description = "Fail",
                     content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
             @ApiResponse(responseCode = "500", description = "Internal Server Error",
                     content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),

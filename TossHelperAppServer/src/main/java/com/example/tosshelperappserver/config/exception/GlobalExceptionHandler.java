@@ -142,6 +142,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
         return buildErrorResponse(subscribeExpireException, subscribeExpireException.getMessage(), HttpStatus.PRECONDITION_FAILED, request);
     }
 
+
+    // 401 AuthenticationCredientialException
+    @ExceptionHandler(AuthenticationCredientialException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<Object> handleUnauthenticationCredException(AuthenticationCredientialException authCredientialException, WebRequest request) {
+        log.error("Failed to authorization", authCredientialException);
+        return buildErrorResponse(authCredientialException, authCredientialException.getMessage(), HttpStatus.UNAUTHORIZED, request);
+    }
+
     /** 필요시 ExceptionHandler 추가 - 예상가는 오류 있다면 전부 ExceptionHandler 이용해 처리. **/
 
 

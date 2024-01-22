@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
- * [JWT Token 관련 메서드를 제공하는 클래스]
+ * [JWT 관련 메서드를 제공하는 클래스]
  */
 @Slf4j
 @Component
