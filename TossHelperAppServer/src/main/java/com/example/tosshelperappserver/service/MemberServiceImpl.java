@@ -4,6 +4,7 @@ import com.example.tosshelperappserver.common.constant.RoleType;
 import com.example.tosshelperappserver.config.exception.custom.AlreadyExistElementException;
 import com.example.tosshelperappserver.domain.Member;
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
+import com.example.tosshelperappserver.dto.member.MemberWithCategoryDto;
 import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
 import com.example.tosshelperappserver.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -39,6 +40,13 @@ public class MemberServiceImpl implements MemberService{
     public CustomUserInfoDto getMemberInfoIncludePwdByEmail(String email) {
         Member member = memberJpaRepository.findMemberByEmail(email);
         CustomUserInfoDto dto = modelMapper.map(member, CustomUserInfoDto.class);
+        return dto;
+    }
+
+    @Override
+    public MemberWithCategoryDto getMemberInfoWithOwnCategory(Long id) {
+        Member member = memberJpaRepository.findAllLeftFetchJoin(id);
+        MemberWithCategoryDto dto = modelMapper.map(member, MemberWithCategoryDto.class);
         return dto;
     }
 }

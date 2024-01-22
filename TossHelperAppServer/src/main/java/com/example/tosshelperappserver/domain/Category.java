@@ -19,7 +19,7 @@ public class Category {
     @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "CONTENT", nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,7 @@
 package com.example.tosshelperappserver.service;
 
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
+import com.example.tosshelperappserver.dto.member.MemberWithCategoryDto;
 import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
 
 public interface MemberService {
@@ -18,4 +19,13 @@ public interface MemberService {
      * @param MemberJoinRequestDto
      */
     CustomUserInfoDto getMemberInfoIncludePwdByEmail(String email);
+
+
+
+    /**
+     * [유저와 소유 카테고리 선택]
+     * 유저 소유 카테고리 선택
+     * @param MemberWithCategoryDto
+     */
+    MemberWithCategoryDto getMemberInfoWithOwnCategory(Long id);
 }
