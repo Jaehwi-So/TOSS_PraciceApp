@@ -1,7 +1,9 @@
 package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.common.constant.AuthConstant;
+import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
 import com.example.tosshelperappserver.dto.BasicResponseDto;
+import com.example.tosshelperappserver.dto.member.MemberDto;
 import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -26,11 +29,11 @@ public class ExampleApiController {
     @PreAuthorize(AuthConstant.AUTH_COMMON)
     @Operation(summary = "Example API Summary", description = "Your description")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success",
-                    content = {@Content(schema = @Schema(implementation = BasicResponseDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "404", description = "Not Found",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))})
     })
-    public BasicResponseDto exampleAPI(
+    public BasicResponseDto<MemberJoinRequestDto> exampleAPI(
             //Path Parameter
             @PathVariable
             @Schema(description = "Path Value", example = "1")
@@ -44,7 +47,7 @@ public class ExampleApiController {
             @RequestBody @Valid MemberJoinRequestDto requestBody
     ) {
         String s = String.format("PathValue = %d , ParamValue = %s, Request Email : %s", pathValue, paramValue, requestBody.getEmail());
-        BasicResponseDto response = new BasicResponseDto(true, "Example API Success",  s);
+        BasicResponseDto response = new BasicResponseDto(true, "Example API Success",  requestBody);
         return response;
     }
 
