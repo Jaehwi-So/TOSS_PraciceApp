@@ -1,10 +1,12 @@
 package com.example.tosshelperappserver;
 
 
-import com.example.tosshelperappserver.domain.example.Author;
-import com.example.tosshelperappserver.domain.example.Book;
-import com.example.tosshelperappserver.domain.example.Organization;
+import com.example.tosshelperappserver.domain.example.*;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -16,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.example.tosshelperappserver.domain.example.QAuthor.author;
 import static com.example.tosshelperappserver.domain.example.QBook.book;
 import static com.example.tosshelperappserver.domain.example.QReview.review;
+import static com.querydsl.jpa.JPAExpressions.*;
 import static org.assertj.core.api.Assertions.*;
 import static com.example.tosshelperappserver.domain.example.QOrganization.organization;
 
@@ -81,6 +85,10 @@ public class QueryDslTest {
                 .extracting("id")
                 .containsExactly(1L, 2L);
 
+        for(Book ele : books){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
         print("join", books);
 
     }
@@ -134,6 +142,10 @@ public class QueryDslTest {
                 .fetch();
 
         //then
+        for(Book ele : books){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
 
     }
 
@@ -148,14 +160,19 @@ public class QueryDslTest {
         //given
 
         //when
-        List<Tuple> results = queryFactory
-                .select(book, author)
+        List<Book> books = queryFactory
+                .select(book)
                 .from(book)
                 .leftJoin(book.author, author)
                 .on(author.name.eq("John Doe"))
                 .fetch();
 
-        print("leftJoinOnFiltering", results);
+        for(Book ele : books){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
+
+        print("leftJoinOnFiltering", books);
 
         //then
 
@@ -172,14 +189,20 @@ public class QueryDslTest {
         //given
 
         //when
-        List<Tuple> results = queryFactory
-                .select(book, author)
+        List<Book> results = queryFactory
+                .select(book)
                 .from(book)
                 .innerJoin(book.author, author)
                 .on(author.name.eq("John Doe"))  // == where(author.name.eq("John Doe"))
                 .fetch();
 
-        print("leftJoinOnFiltering", results);
+
+        for(Book ele : results){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
+
+        print("innerJoinOnFiltering", results);
 
         //then
 
@@ -225,8 +248,15 @@ public class QueryDslTest {
                 .where(author.name.eq("John Doe"))
                 .fetch();
 
+
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(books.get(0).getAuthor());
         assertThat(loaded).as("로드되지 않음").isFalse();
+
+        for(Book ele : books){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
+
         print("Fetch Join 미적용", books);
 
     }
@@ -245,9 +275,222 @@ public class QueryDslTest {
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(books.get(0).getAuthor());
         assertThat(loaded).as("로드됨").isTrue();
 
+        for(Book ele : books){
+            System.out.println(ele);
+            System.out.println(ele.getAuthor());
+        }
+        print("Fetch Join 적용", books);
 
 
     }
+
+
+    @Test
+    public void complexJoin(){
+        em.flush();
+        em.clear();
+
+        List<Review> reviews = queryFactory
+                .select(review)
+                .from(review)
+                .join(review.book, book).fetchJoin()
+                .join(book.author, author).fetchJoin()
+                .fetch();
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(reviews.get(0).getBook());
+        assertThat(loaded).as("로드됨").isTrue();
+
+        for(Review ele : reviews){
+            System.out.println(ele.getBook().getAuthor());
+            System.out.println(ele);
+        }
+
+    }
+
+    @Test
+    public void complexJoin2(){
+        em.flush();
+        em.clear();
+
+        List<Review> reviews = queryFactory
+                .select(review)
+                .from(review)
+                .join(book)
+                .on(review.comment.contains(book.title))
+                .join(book.author, author)
+                .fetch();
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(reviews.get(0).getBook());
+        assertThat(loaded).as("로드됨").isTrue();
+
+        for(Review ele : reviews){
+            System.out.println(ele.getBook());
+            System.out.println(ele.getBook().getAuthor());
+            System.out.println(ele);
+        }
+
+    }
+
+
+    /**
+     * 나이가 가장 많은 저자 조회
+     */
+    @Test
+    public void subQuery(){
+
+        QAuthor subAuthor = new QAuthor("subAuthor");
+        Author result = queryFactory
+                .selectFrom(author)
+                .where(author.age.eq(
+                        select(subAuthor.age.max())
+                                .from(subAuthor)
+                ))
+                .fetchFirst();
+
+        System.out.println("Sub Query : " + result);
+
+    }
+
+    /**
+     * Static Import 가능 JPAExpressions
+     */
+//    Author result = queryFactory
+//            .selectFrom(author)
+//            .where(author.age.eq(
+//                    JPAExpressions
+//                            .select(subAuthor.age.max())
+//                            .from(subAuthor)
+//            ))
+//            .fetchFirst();
+
+
+    /**
+     * 서술한 책이 평균보다 많은 저자 조회
+     */
+    @Test
+    public void subQuery2(){
+
+        QAuthor subAuthor = new QAuthor("subAuthor");
+        Author result = queryFactory
+                .selectFrom(author)
+                .where(author.book.size().goe(
+                        select(subAuthor.book.size().avg())
+                                .from(subAuthor)
+                                .innerJoin(subAuthor.book, book)
+                ))
+                .fetchFirst();
+
+        System.out.println("Sub Query : " + result);
+
+    }
+
+
+    /**
+     * 모든 저자들의 평균 나이를 함께 선택
+     */
+    @Test
+    public void subQuery3(){
+
+        QAuthor subAuthor = new QAuthor("subAuthor");
+        List<Tuple> result = queryFactory
+                .select(author.name,
+                        select(subAuthor.age.avg())
+                                .from(subAuthor)
+                )
+                .from(author)
+                .fetch();
+
+        print("Sub Query : ", result);
+
+    }
+
+
+    @Test
+    public void caseSelect(){
+
+        List<Tuple> result = queryFactory
+                .select(author.name,
+                        author.gender
+                                .when("M").then("Male")
+                                .otherwise("Female"),
+                        new CaseBuilder()
+                            .when(author.age.between(0, 35)).then("Junior")
+                            .otherwise("Senior")
+                )
+                .from(author)
+                .fetch();
+
+        print("caseSelect : ", result);
+
+    }
+
+
+    @Test
+    public void caseSelect2(){
+
+        StringExpression career = new CaseBuilder()
+                .when(author.age.between(0, 35)).then("Junior")
+                .otherwise("Senior");
+
+        List<Tuple> result = queryFactory
+                .select(author.name,
+                        author.gender
+                                .when("M").then("Male")
+                                .otherwise("Female"),
+                        career
+
+                )
+                .from(author)
+                .orderBy(career.desc())
+                .fetch();
+
+        print("caseSelect2 : ", result);
+
+    }
+
+    @Test
+    public void SelectWithConcatAndExression() throws Exception {
+        //given
+
+        //when
+        List<Tuple> results = queryFactory
+                .select(author.name.concat("_").concat(author.age.stringValue()),
+                        author.age.add(10),
+                        Expressions.constant("ABC"),
+                        Expressions.constant(new Date().toString()))
+                .from(author)
+                .fetch();
+
+        print("SelectWithConcatAndExression", results);
+
+        //then
+
+    }
+
+    @Test
+    public void JoinWithConcat() throws Exception {
+        //given
+
+        //when
+        List<Tuple> results = queryFactory
+                .select(book, review)
+                .from(book)
+                .innerJoin(review)
+                .on(review.comment.like(book.title.prepend("%").concat("%")))
+                .fetch();
+
+        print("JoinWithConcat", results);
+
+        //then
+
+    }
+
+
+
+
+    /**
+     * From절의 서브쿼리 불가능!!
+     */
 
 
 
