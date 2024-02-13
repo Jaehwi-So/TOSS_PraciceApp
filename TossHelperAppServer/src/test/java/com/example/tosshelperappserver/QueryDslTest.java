@@ -6,12 +6,10 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;
-import org.hibernate.dialect.TiDBDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -529,3 +527,8 @@ public class QueryDslTest {
 //    }
 
 }
+
+
+/**
+ * 1. 튜플 타입은 사용하게 된다면 Repository 안에서만 쓰고, DTO로 반환하도록
+ */
