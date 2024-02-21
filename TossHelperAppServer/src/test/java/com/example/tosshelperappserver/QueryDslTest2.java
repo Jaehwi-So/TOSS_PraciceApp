@@ -3,10 +3,12 @@ package com.example.tosshelperappserver;
 
 import com.example.tosshelperappserver.domain.example.*;
 import com.example.tosshelperappserver.dto.example.*;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.MathExpressions;
 import com.querydsl.jpa.JPQLTemplates;
@@ -53,7 +55,7 @@ public class QueryDslTest2 {
     }
 
 
-    //Setter 사용
+    //프로퍼티 접근 (Setter)
     @Test
     public void projectionTestBySetter() throws Exception {
         //given
@@ -66,6 +68,28 @@ public class QueryDslTest2 {
                         author.age,
                         ExpressionUtils.as(author.gender, "sex")
 //                        author.gender.as("sex")
+                ))
+                .from(author)
+                .fetch();
+
+        print("projectionTestBySetter", results);
+
+        //then
+    }
+
+
+    //생성자로 접근
+    @Test
+    public void projectionTestByConstuctor() throws Exception {
+        //given
+
+        //when
+        List<AuthorDto> results = queryFactory
+                .select(Projections.constructor(AuthorDto.class,
+                        author.id,
+                        author.name,
+                        author.age,
+                        author.gender
                 ))
                 .from(author)
                 .fetch();
@@ -364,6 +388,79 @@ public class QueryDslTest2 {
     }
 
 
+    @Test
+    public void usingDynamicQuery() throws Exception {
+        //given
+
+        List<Author> authors = DynamicQueryWithBooleanBuilder("John Doe", 25);
+        System.out.println(authors);
+
+        authors = DynamicQueryWithBooleanBuilder("Jane Smith", null);
+        System.out.println(authors);
+
+        authors = DynamicQueryWithBooleanBuilder(null, null);
+        System.out.println(authors);
+        //when
+
+        //then
+
+    }
+
+    private List<Author> DynamicQueryWithBooleanBuilder(String name, Integer age) {
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if (name != null) {
+            predicate.and(author.name.eq(name));
+        }
+
+        if (age != null) {
+            predicate.and(author.age.eq(age));
+        }
+
+        return queryFactory
+                .selectFrom(author)
+                .where(predicate)
+                .fetch();
+
+    }
+
+
+    @Test
+    public void usingWhereDynamicParam() throws Exception {
+        //given
+
+        List<Author> authors = WhereDynamicParam("John Doe", 25);
+        System.out.println(authors);
+
+        authors = WhereDynamicParam("Jane Smith", null);
+        System.out.println(authors);
+
+        authors = WhereDynamicParam(null, null);
+        System.out.println(authors);
+        //when
+
+        //then
+
+    }
+
+    private List<Author> WhereDynamicParam(String name, Integer age) {
+        return queryFactory
+                .selectFrom(author)
+                .where(nameEq(name), ageEq(age))
+                .fetch();
+    }
+
+
+    private BooleanExpression nameEq(String nameCond) {
+        return nameCond != null ? author.name.eq(nameCond) : null;
+    }
+
+    private BooleanExpression ageEq(Integer ageCond) {
+        return ageCond != null ? author.age.eq(ageCond) : null;
+    }
+
+
 
 
     private <T> void print(String title, List<T> tuples){
@@ -372,6 +469,8 @@ public class QueryDslTest2 {
             System.out.println("Tuple : " + tuple);
         }
     }
+
+
 
 
 

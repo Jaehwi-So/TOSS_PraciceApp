@@ -1,6 +1,7 @@
 package com.example.tosshelperappserver.dto.example;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +12,6 @@ public class AuthorWithAvergeAgeDto {
     private String name;
 
     private double averageAge;
-
-
-
-
 
 
     @QueryProjection

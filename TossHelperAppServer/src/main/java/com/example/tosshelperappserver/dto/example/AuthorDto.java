@@ -21,4 +21,11 @@ public class AuthorDto {
 
     private int averageAge;
 
+    public AuthorDto(Long id, String name, int age, String sex) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.sex = sex;
+    }
+
 }
