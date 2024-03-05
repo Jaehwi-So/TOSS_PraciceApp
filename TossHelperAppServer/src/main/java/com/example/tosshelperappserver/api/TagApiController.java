@@ -2,6 +2,7 @@ package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
 import com.example.tosshelperappserver.config.security.SecurityUtil;
+import com.example.tosshelperappserver.dto.tag.MemberWithTagDto;
 import com.example.tosshelperappserver.dto.tag.TagRequestDto;
 import com.example.tosshelperappserver.dto.member.MemberJoinResponseDto;
 import com.example.tosshelperappserver.dto.tag.TagResponseDto;
@@ -47,6 +48,28 @@ public class TagApiController {
 
         TagResponseDto response = new TagResponseDto(result);
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+
+    @GetMapping("/{memberId}")
+    @Operation(summary = "유저와 연관 태그 선택", description = "태그 선택")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(schema = @Schema(implementation = MemberJoinResponseDto.class))}),
+            @ApiResponse(responseCode = "412", description = "Validate Error",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
+    })
+    public ResponseEntity<MemberWithTagDto> getTagByMember(
+            @PathVariable
+            @Schema(description = "회원 ID", example = "1")
+            Long memberId
+    ) {
+
+        MemberWithTagDto member = tagService.getTagInfoByMember(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(member);
     }
 
 

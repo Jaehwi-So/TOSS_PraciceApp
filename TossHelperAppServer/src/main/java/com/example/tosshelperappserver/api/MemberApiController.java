@@ -1,7 +1,6 @@
 package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
-import com.example.tosshelperappserver.dto.member.MemberWithCategoryDto;
 import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
 import com.example.tosshelperappserver.dto.member.MemberJoinResponseDto;
 import com.example.tosshelperappserver.service.member.MemberService;
@@ -45,27 +44,6 @@ public class MemberApiController {
     }
 
 
-
-
-    @GetMapping("/{memberId}")
-    @Operation(summary = "유저와 연관 카테고리 선택", description = "회원 정보 선택")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Success",
-                    content = {@Content(schema = @Schema(implementation = MemberJoinResponseDto.class))}),
-            @ApiResponse(responseCode = "412", description = "Validate Error",
-                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error",
-                    content = {@Content(schema = @Schema(implementation = ErrorResponseDto.class))}),
-    })
-    public ResponseEntity<MemberWithCategoryDto> getMemberProfile(
-            @PathVariable
-            @Schema(description = "회원 ID", example = "1")
-            Long memberId
-    ) {
-
-        MemberWithCategoryDto member = memberService.getMemberInfoWithOwnCategory(memberId);
-        return ResponseEntity.status(HttpStatus.OK).body(member);
-    }
 
 
 

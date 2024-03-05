@@ -4,6 +4,7 @@ import com.example.tosshelperappserver.config.exception.custom.AlreadyExistEleme
 import com.example.tosshelperappserver.config.exception.custom.NoSuchElementFoundException;
 import com.example.tosshelperappserver.domain.Member;
 import com.example.tosshelperappserver.domain.Tag;
+import com.example.tosshelperappserver.dto.tag.MemberWithTagDto;
 import com.example.tosshelperappserver.dto.tag.TagRequestDto;
 import com.example.tosshelperappserver.repository.member.MemberRepository;
 import com.example.tosshelperappserver.repository.tag.TagRepository;
@@ -39,5 +40,11 @@ public class TagServiceImpl implements TagService{
         return result.getTagId();
     }
 
+    @Override
+    public MemberWithTagDto getTagInfoByMember(Long memberId) {
+        Member member = memberRepository.findAllLeftFetchJoin(memberId);
+        MemberWithTagDto dto = modelMapper.map(member, MemberWithTagDto.class);
+        return dto;
+    }
 
 }

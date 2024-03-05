@@ -1,4 +1,4 @@
-package com.example.tosshelperappserver.dto.member;
+package com.example.tosshelperappserver.dto.tag;
 
 import com.example.tosshelperappserver.dto.tag.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(title = "MEM_RES_03 : 회원 데이터 + 카테고리")
-public class MemberWithCategoryDto {
+public class MemberWithTagDto {
 
     @Schema(description = "사용자 PK", example = "1")
     private Long memberId;
