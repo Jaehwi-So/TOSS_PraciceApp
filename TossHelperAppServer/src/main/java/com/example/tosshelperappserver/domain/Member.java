@@ -33,5 +33,5 @@ public class Member {
     private RoleType role;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Category> categories;
+    private List<Tag> tags;
 }

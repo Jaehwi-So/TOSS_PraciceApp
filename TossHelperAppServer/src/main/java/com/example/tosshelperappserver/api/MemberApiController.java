@@ -2,9 +2,9 @@ package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
 import com.example.tosshelperappserver.dto.member.MemberWithCategoryDto;
-import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
-import com.example.tosshelperappserver.dto.member.swagger.MemberJoinResponseDto;
-import com.example.tosshelperappserver.service.MemberService;
+import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
+import com.example.tosshelperappserver.dto.member.MemberJoinResponseDto;
+import com.example.tosshelperappserver.service.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

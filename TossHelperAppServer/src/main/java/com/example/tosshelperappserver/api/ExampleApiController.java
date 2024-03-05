@@ -3,8 +3,7 @@ package com.example.tosshelperappserver.api;
 import com.example.tosshelperappserver.common.constant.AuthConstant;
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
 import com.example.tosshelperappserver.dto.BasicResponseDto;
-import com.example.tosshelperappserver.dto.member.MemberDto;
-import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
+import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 

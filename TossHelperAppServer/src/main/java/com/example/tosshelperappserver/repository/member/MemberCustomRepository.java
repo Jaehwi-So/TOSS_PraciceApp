@@ -1,9 +1,6 @@
-package com.example.tosshelperappserver.repository;
+package com.example.tosshelperappserver.repository.member;
 
-import com.example.tosshelperappserver.domain.Category;
 import com.example.tosshelperappserver.domain.Member;
-
-import java.util.List;
 
 public interface MemberCustomRepository {
 

@@ -1,4 +1,4 @@
-package com.example.tosshelperappserver.repository;
+package com.example.tosshelperappserver.repository.member;
 import com.example.tosshelperappserver.domain.Member;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
@@ -19,12 +19,9 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository{
 
         return jpaQueryFactory.selectFrom(member)
                 .where(member.memberId.eq(id))
-                .leftJoin(member.categories)
+                .leftJoin(member.tags)
                 .fetchJoin()
                 .fetchOne();
-//                .fetch();
-
-
     }
 
 

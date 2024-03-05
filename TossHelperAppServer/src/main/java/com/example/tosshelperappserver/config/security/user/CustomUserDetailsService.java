@@ -2,7 +2,7 @@ package com.example.tosshelperappserver.config.security.user;
 
 import com.example.tosshelperappserver.domain.Member;
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
-import com.example.tosshelperappserver.repository.MemberRepository;
+import com.example.tosshelperappserver.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;

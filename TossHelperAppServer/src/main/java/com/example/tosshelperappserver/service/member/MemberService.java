@@ -1,8 +1,8 @@
-package com.example.tosshelperappserver.service;
+package com.example.tosshelperappserver.service.member;
 
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
 import com.example.tosshelperappserver.dto.member.MemberWithCategoryDto;
-import com.example.tosshelperappserver.dto.member.swagger.MemberJoinRequestDto;
+import com.example.tosshelperappserver.dto.member.MemberJoinRequestDto;
 
 public interface MemberService {
 

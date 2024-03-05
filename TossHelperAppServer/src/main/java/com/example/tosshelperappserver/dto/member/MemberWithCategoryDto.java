@@ -1,7 +1,6 @@
 package com.example.tosshelperappserver.dto.member;
 
-import com.example.tosshelperappserver.domain.Category;
-import com.example.tosshelperappserver.dto.category.CategoryDto;
+import com.example.tosshelperappserver.dto.tag.TagDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,7 @@ public class MemberWithCategoryDto {
     @Schema(description = "사용자 이름", example = "John Doe")
     private String name;
 
-    @Schema(description = "카테고리")
-    private List<CategoryDto> categories;
+    @Schema(description = "태그")
+    private List<TagDto> tags;
 
 }

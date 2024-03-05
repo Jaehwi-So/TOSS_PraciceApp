@@ -1,6 +1,6 @@
-package com.example.tosshelperappserver.service;
+package com.example.tosshelperappserver.service.auth;
 
-import com.example.tosshelperappserver.dto.member.swagger.LoginRequestDto;
+import com.example.tosshelperappserver.dto.member.LoginRequestDto;
 
 public interface AuthService {
 

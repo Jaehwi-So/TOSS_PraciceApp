@@ -1,17 +1,14 @@
-package com.example.tosshelperappserver.service;
+package com.example.tosshelperappserver.service.auth;
 
 import com.example.tosshelperappserver.config.exception.custom.AuthenticationCredientialException;
 import com.example.tosshelperappserver.config.security.jwt.JwtUtil;
 import com.example.tosshelperappserver.domain.Member;
-import com.example.tosshelperappserver.dto.member.swagger.LoginRequestDto;
+import com.example.tosshelperappserver.dto.member.LoginRequestDto;
 
 import com.example.tosshelperappserver.dto.member.CustomUserInfoDto;
-import com.example.tosshelperappserver.repository.MemberRepository;
+import com.example.tosshelperappserver.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

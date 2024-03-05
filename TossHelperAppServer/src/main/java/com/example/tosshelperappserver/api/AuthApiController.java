@@ -1,9 +1,8 @@
 package com.example.tosshelperappserver.api;
 
 import com.example.tosshelperappserver.config.exception.ErrorResponseDto;
-import com.example.tosshelperappserver.config.exception.custom.AuthenticationCredientialException;
-import com.example.tosshelperappserver.dto.member.swagger.LoginRequestDto;
-import com.example.tosshelperappserver.service.AuthService;
+import com.example.tosshelperappserver.dto.member.LoginRequestDto;
+import com.example.tosshelperappserver.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
