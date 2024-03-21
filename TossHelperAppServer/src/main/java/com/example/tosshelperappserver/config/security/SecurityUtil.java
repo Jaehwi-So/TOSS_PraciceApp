@@ -13,6 +13,7 @@ public class SecurityUtil {
      * @return [String] PK
      */
     public static Long getCurrentMemberPk() {
+
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getName() == null) {
             throw new RuntimeException("No authentication information.");
@@ -20,5 +21,7 @@ public class SecurityUtil {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userPk = userDetails.getMember().getMemberId();
         return userPk;
+
     }
+
 }
